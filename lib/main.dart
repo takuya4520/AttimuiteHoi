@@ -27,14 +27,22 @@ class AttimuiteHoi extends StatefulWidget {
 
 class _AttimuiteHoiState extends State<AttimuiteHoi> {
   int winCounter = 0;
+
+  /// succes　-> success かな?
+  /// 5回連勝の達成回数を記録しようとしていてよい！
   int succesCounter = 0;
   int maxCounter = 0;
   String myHand = '👆';
   String computerHand = '👆';
   String result = '';
 
+  /// ゲーム続行中は isPlaying が true となる
+  /// このように書くと意味が理解しやすい
+  bool get isPlaying => result != 'あかん、、残念！';
+
   void selectHand(String selectedHand) {
-    if (result == 'ええ調子や！' || result == '') {
+    // ここを result == 'ええ調子や！' || result == '' から変更
+    if (isPlaying) {
       myHand = selectedHand;
       generateComputerHand();
       judge();
@@ -88,17 +96,17 @@ class _AttimuiteHoiState extends State<AttimuiteHoi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            'そっち指差しちゃあかんのよ！',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'そっち指差しちゃあかんのよ！',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
         ),
-        body: Center(
-            child: Column(
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -190,36 +198,48 @@ class _AttimuiteHoiState extends State<AttimuiteHoi> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    selectHand('👆');
-                  },
+                  // ボタンを押しても意味がない時は非活性にしたほうが良い
+                  onPressed: isPlaying
+                      ? () {
+                          selectHand('👆');
+                        }
+                      : null,
                   child: const Text(
                     '👆',
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    selectHand('👉');
-                  },
+                  // ボタンを押しても意味がない時は非活性にしたほうが良い
+                  onPressed: isPlaying
+                      ? () {
+                          selectHand('👉');
+                        }
+                      : null,
                   child: const Text(
                     '👉',
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    selectHand('👈');
-                  },
+                  // ボタンを押しても意味がない時は非活性にしたほうが良い
+                  onPressed: isPlaying
+                      ? () {
+                          selectHand('👈');
+                        }
+                      : null,
                   child: const Text(
                     '👈',
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    selectHand('👇');
-                  },
+                  // ボタンを押しても意味がない時は非活性にしたほうが良い
+                  onPressed: isPlaying
+                      ? () {
+                          selectHand('👇');
+                        }
+                      : null,
                   child: const Text(
                     '👇',
                     style: TextStyle(fontSize: 25),
@@ -250,6 +270,8 @@ class _AttimuiteHoiState extends State<AttimuiteHoi> {
                 ],
               ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
